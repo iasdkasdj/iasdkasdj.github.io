@@ -11,13 +11,19 @@
       font-size: 30px;
     }
   header {
-    height: 200px;
+  height: 200px;
   border: 2px solid blue;
-  }
+  position: relative; /* 添加相对定位 */
+}
   footer {
     height: 100px;
   border: 2px solid blue;
   }
+  img {
+  max-width: 10%; /* 确保图片不超过 header 的宽度 */
+  float: right; /* 图片右浮动 */
+  margin-left: 10px; /* 添加一些左边距，避免图片与边框紧贴 */
+}
   main {
     height: 400px;
   border: 2px solid blue;
@@ -29,6 +35,7 @@
  <body>
   <header>
     《计算思维和语言学习》
+    <img src="/myface/1.jpg" alt="My Photo">
   </header>
 
    <main>
@@ -36,7 +43,7 @@
    </main>
 
   <footer> 
-    CopyRight from 李健宏 江西科技师范大学 2022--2025
+    张梓鑫 江西科技师范大学 2022--2025
   </footer> 
   
  <!-- <script src="myJs.js" > 
