@@ -55,7 +55,7 @@
     width: 80%;
     height: 80%;
     border:1px solid red;
-    background-color: blanchedalmond;
+    background-color:greenyellow;
     margin:auto;
   }
 </style>
@@ -63,7 +63,7 @@
 <body >
   <header>
     <p id="book">
-     《现代电影赏析》
+     计算机思维学习
     </p>
    </header>
   <nav>
@@ -81,12 +81,12 @@
 
   <footer> 
    
-	CopyRight from 鄢佳文 江西科技师范大学 2022--2025
+	CopyRight from 张梓鑫 江西科技师范大学 2022--2025
 
   </footer> 
   <div id="aid">
     <p>用户键盘响应区</p>
-
+    <p id="keyboard"></p>
   </div>
  <script>
   var UI = {};
@@ -132,6 +132,17 @@ $("bookface").addEventListener("mousemove",function(ev){
     $("bookface").textContent= "鼠标正在移动，坐标为："+"("+x+","+y+")";
 });
 
+$("bookface").addEventListener("mouseout",function(ev){
+  // console.log(ev);
+  $("bookface").textContent="鼠标已经离开";
+})
+$("body").addEventListener("keypress",function(ev){
+  let key=ev.key;
+  let code=ev.keyCode;
+  let string="键的代码是：";
+  console.log(key);
+  $("keyboard").textContent=key+string+code;
+})
 
   function $(ele){
         if (typeof ele !== 'string'){
