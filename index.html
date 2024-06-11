@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -5,71 +6,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>我的主页</title>
     <style>
-    body {
+   /* 背景和字体设置 */
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: linear-gradient(to bottom, #4a90e2, #2f70c5); /* 渐变背景色 */
-    color: #333; /* 文字颜色为深灰色 */
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* 更鲜艳的背景渐变 */
+    color: #333;
 }
 
+/* 容器样式 */
 .container {
     max-width: 800px;
-    margin: 50px auto; /* 垂直和水平居中 */
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.95); /* 半透明白色背景 */
-    border-radius: 10px; /* 圆角 */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* 更轻的阴影 */
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px; /* 增大圆角 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* 更明显的阴影 */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 添加过渡效果 */
 }
 
+.container:hover {
+    transform: translateY(-10px); /* 悬停时向上移动 */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* 悬停时阴影变化 */
+}
+
+/* 标题样式 */
 h1 {
     margin-top: 0;
     text-align: center;
-    color: black; /* 标题颜色为黑色 */
+    color: #333;
+    font-size: 3em; /* 更大的标题字体 */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px; /* 字母间距 */
 }
 
+/* 子标题样式 */
 h2 {
     margin-top: 20px;
-    color: #ffc107; /* 黄色标题 */
+    color: #ff6f61;
+    font-size: 2em;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
 }
 
+h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 100%;
+    height: 3px;
+    background-color: #ff6f61;
+    border-radius: 1.5px;
+}
+
+/* 链接列表样式 */
 .link-list {
     list-style-type: none;
     padding: 0;
 }
 
 .link-list li {
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* 增加链接项之间的间距 */
+    position: relative;
 }
 
+/* 链接样式 */
 .link-list li a {
     text-decoration: none;
-    color: #007bff; /* 链接颜色为蓝色 */
-    transition: color 0.3s ease;
+    color: #007bff;
+    font-weight: 500;
+    font-size: 1.2em;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
+/* 链接悬停效果 */
 .link-list li a:hover {
-    color: #0056b3; /* 悬停时变暗链接颜色 */
+    color: #0056b3;
+    transform: translateX(10px); /* 悬停时右移更多 */
 }
 
+/* 链接前的小圆点 */
+.link-list li a::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #007bff;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.link-list li a:hover::before {
+    opacity: 1;
+}
+
+/* 分节样式 */
 .container section {
-    margin-top: 20px;
-    border-top: 1px solid #ccc; /* 分隔线颜色为浅灰色 */
-    padding-top: 20px;
-    color: #555; /* 章节内容文字颜色为深灰色 */
+    margin-top: 30px;
+    padding-top: 25px;
+    color: #555;
+    border-top: 1px solid #eee;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 分节悬停效果 */
+.container section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .container section:first-child {
-    border-top: none; /* 移除第一个章节的上边框 */
+    border-top: none;
 }
 
 .container section:last-child {
-    padding-bottom: 0; /* 移除最后一个章节的下边距 */
+    padding-bottom: 0;
 }
 
 .container section:not(:first-child) {
-    border-top: 1px solid #eee; /* 添加章节之间的分隔线 */
-    padding-top: 30px; /* 增加章节内容之间的间距 */
+    padding-top: 35px;
 }
 
   </style>
