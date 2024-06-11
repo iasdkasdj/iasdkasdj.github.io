@@ -5,22 +5,20 @@
   <meta name="viewport" content="width=device-width , initial-scale=1 , user-scalable=no">
   <title>在UI中利用键盘的底层事件</title>
 <style>
-  *{
+*{
     margin: 10px;
     text-align: center;
   }
   header{
-    border: 3px solid blue;
-    height: 10%;
-    font-size: 1em;
-
+    border: 3px solid  green;
+    
   }
   nav{
-    border: 3px solid blue;
+    border: 3px solid  green;
     height: 10%;
   }
   main{
-    border: 3px solid blue;
+    border: 3px solid  green;
     height: 70%;
     font-size: 0.8em;  
     position: relative;
@@ -33,19 +31,16 @@
   }
 
   footer{
-    border: 3px solid blue;
+    border: 3px solid  green;
     height:10%;
     font-size: 0.7em;
   } 
   body{
     position: relative;
   }
-  button{
-   font-size:1em;
-  }
   #aid{
     position: absolute;
-    border: 3px solid green;
+    border: 3px solid blueviolet;
     top:0px;
     left:600px;
   }
@@ -53,12 +48,39 @@
     position: absolute;
     width: 80%;
     height: 80%;
-    border:1px solid blue;
-    background-color: yellow;
+    border:1px solid  red;
+    background-image: url(); /* 添加你的背景图片 */
+    background-size: cover;
+    background-position: center;
     left:7% ;
     top: 7% ;
-	
+    transition: opacity 0.5s ease;
   }
+  #book {
+    font-family: Arial, sans-serif; /* 使用一个美观的无衬线字体 */
+    font-size: 1em; /* 调整字体大小 */
+    font-weight: bold; /* 使用粗体字体 */
+    color: #333; /* 设置字体颜色 */
+    text-transform: uppercase; /* 将文字转换为大写 */
+    letter-spacing: 1px; /* 增加字母间距 */
+}
+nav button {
+    margin: 0 5px; /* 调整按钮间距 */
+    padding: 8px 16px; /* 添加填充以改善按钮外观 */
+    font-size: 0.7em; /* 设置按钮字体大小 */
+    cursor: pointer;
+    border: none;
+    border-radius: 5px; /* 添加圆角以使按钮更圆润 */
+    background-color: #4CAF50; /* 添加背景颜色 */
+    color: white;
+    transition: background-color 0.3s ease; /* 悬停时平滑过渡背景颜色 */
+}
+nav button:hover {
+    background-color: #45a049; /* 悬停时加深背景颜色 */
+}
+#forwardBtn, #backwardBtn, #pauseBtn {
+    margin: 10px;
+}
 </style>
 </head> 
 <body >
@@ -67,10 +89,10 @@
      《我的毕设题目》
     </p>
    </header>
-  <nav>
-   <button>向前</button>
-   <button>向后</button>
-   <button>其他</button>
+   <nav>
+    <button id="backwardBtn">后退</button>
+    <button id="pauseBtn">暂停播放</button>
+    <button id="forwardBtn">前进</button>
   </nav>
  
 
@@ -94,6 +116,10 @@
    <p id="keyboard"></p> 
   </div>
  <script>
+  const images = ['../lesson/webProgramming.jpg', '../lesson/logic.jpg', '../lesson/gitForTeams.jpg'];
+let currentIndex = 0;
+let intervalId = null;
+let isPlaying = true; // 标记自动播放状态，默认为true表示正在播放
   var UI = {};
   if(window.innerWidth>600){
     UI.appWidth=600;
@@ -259,7 +285,50 @@ function $(ele){
             }
           }
        } //end of $
+ // 更新显示的图片
+ function updateImage() {
+  document.getElementById('bookface').style.backgroundImage = `url('${images[currentIndex]}')`;
+}
 
+// 点击前进按钮
+document.getElementById('forwardBtn').addEventListener('click', function() {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImage();
+});
+// 点击后退按钮
+document.getElementById('backwardBtn').addEventListener('click', function() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateImage();
+});
+// 下一张图片
+function nextImage() {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImage();
+}
+
+// 初始化显示第一张图片
+updateImage();
+
+// 自动播放
+intervalId = setInterval(nextImage, 3000);
+
+// 停止自动播放
+document.getElementById('pauseBtn').addEventListener('click', function() {
+  clearInterval(intervalId);
+});
+
+// 切换自动播放状态
+document.getElementById('pauseBtn').addEventListener('click', function() {
+  const pauseBtn = document.getElementById('pauseBtn');
+  if (isPlaying) {
+    clearInterval(intervalId); // 停止自动播放
+    pauseBtn.textContent = '开始播放'; // 更改按钮文本
+  } else {
+    intervalId = setInterval(nextImage, 3000); // 开始自动播放
+    pauseBtn.textContent = '暂停播放'; // 更改按钮文本
+  }
+  isPlaying = !isPlaying; // 切换播放状态
+});
  </script>
  </body>
 </html>

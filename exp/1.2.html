@@ -1,87 +1,83 @@
 <!doctype html>
 <html lang="en">
- <head>
+<head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width , initial-scale=1">
-  <!-- 
-   增加这句后，可以看到浏览器的DevTools面板的模拟移动设备状态的变化
-  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body{
+    body {
       text-align: center;
+      margin: 0;
+      padding: 0;
     }
-  header {
-    /* padding-top: 1em; */
-  height:10%;
-  background-color:red;
-  color:black;
-  }
-  nav {
-  height:5%;
-  padding-bottom: 1em;
-  padding-top: 1em;
-  }
-  footer {
-    padding-top: 2em;
-    height: 100px;
-  background-color: green;
-  color:aqua;
-  }
-  main {
-    height: 75%;
-    background-image: url(../lesson/CS.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-  }
-  p#book{
-    font-size: 1.5em;
-    letter-spacing: 0.2em;
-  }
-  button{
-    font-size: 1.2em;
-    margin-right: 1em;
-  }
+    header {
+      height: 10vh;
+      background-color: red;
+      color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    nav {
+      height: 5vh;
+      padding-top: 1em;
+    }
+    nav button {
+      font-size: 1.2em;
+      margin-right: 1em;
+    }
+    footer {
+      padding-top: 2em;
+      height: 100px;
+      background-color: green;
+      color: aqua;
+    }
+    main {
+      height: 75vh;
+      background-image: url("../lesson/CS.jpg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+    p#book {
+      font-size: 1.5em;
+      letter-spacing: 0.2em;
+    }
   </style>
- </head> 
- <body>
-  <header>
-    <p id="book">
-      《计算思维和语言学习》
-    </p>
-  </header>
+</head>
+<body>
+<header>
+  <p id="book">《计算思维和语言学习》</p>
+</header>
 <nav>
-  <button>
-    导航1
-  </button>
-  <button>
-    导航2
-  </button>
-  <button>
-    导航3
-  </button>
+  <button onclick="changeBackground(1)">导航1</button>
+  <button onclick="changeBackground(2)">导航2</button>
+  <button onclick="changeBackground(3)">导航3</button>
 </nav>
-   <main>
-   
-   </main>
+<main></main>
+<footer>张梓鑫 江西科技师范大学 2024--2025</footer>
+<script>
+  // JavaScript部分用于更换背景图片
+  var backgrounds = ["../lesson/CS.jpg", "../lesson/canvas.jpg", "../lesson/CT.jpg"];
+  var currentIndex = 0;
 
-  <footer> 
-    张梓鑫 江西科技师范大学 2022--2025
-  </footer> 
-  <script>
-  var UI ={};
-    UI.deviceWidth=window.innerWidth;
-    UI.deviceHeight=window.innerHeight;
-    document.body.style.height=UI.deviceHeight+"px";
-    document.body.style.fontSize=UI.deviceWidth/25+"px";
-    /* 
-    本次代码了响应式的设计 使得用户在不同平台交互时有更好的体验 
-    1.为四个区域设置了不同的高度比例 
-    2.用javascript动态获取了用户屏幕的高度和高度 并依据需求进行了计算 设置了基础字体的大小 
-    3. 在不同的区域根据内容的重要程度设定了对应区域字体的相对大小
-    4.改变了UI颜色和对比色 对主区域的背景图做了一些外观设计的优化 
-    5.基于以上的内容 我们初步为用户提供了响应式设计并部署了代码
-    */
-  </script>
- </body>
+  function changeBackground(index) {
+    currentIndex = index - 1; // 转换成数组索引
+    document.querySelector("main").style.backgroundImage = "url(" + backgrounds[currentIndex] + ")";
+  }
+
+  // 在窗口大小变化时重新计算字体大小和页面高度
+  function updateFontSizeAndHeight() {
+    var deviceWidth = window.innerWidth;
+    var deviceHeight = window.innerHeight;
+    document.body.style.height = deviceHeight + "px";
+    document.body.style.fontSize = deviceWidth / 25 + "px";
+  }
+
+  // 初始化
+  updateFontSizeAndHeight();
+
+  // 添加窗口大小变化的监听器
+  window.addEventListener("resize", updateFontSizeAndHeight);
+</script>
+</body>
 </html>
