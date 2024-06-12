@@ -64,17 +64,16 @@
     main {
      text-align: center;
       height: 70%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     #bookface {
       text-align: center;
+      left: 41px;
       position: relative;
       width: 80%;
       height: 100%;
       border: 1px solid #ddd;
+      background-image: url();
       background-size: cover;
       background-position: center;
       border-radius: 8px;
@@ -83,7 +82,6 @@
       -moz-user-select: none;
      -webkit-user-select: none;
       -ms-user-select: none;
-       transition: background-image 0.8s ease-in-out;
     }
 
     footer {
@@ -136,7 +134,7 @@
 <body >
   <header>
     <p id="book">
-     Personal Design
+      计算机相关书籍展示
     </p>
    </header>
    <nav>
@@ -171,10 +169,10 @@
     </p>
 </div>
  <script>
+  const images = ['../lesson/GRE.jpg', '../lesson/internet.jpg', '../lesson/nutrition.jpg'];
+let currentIndex = 0;
 let intervalId = null;
 let isPlaying = true; // 标记自动播放状态，默认为true表示正在播放
-let currentIndex = 0;
-let images = ['bitCoin.jpg', 'canvas.jpg', 'CS.jpg', 'CSS.jpg', 'cssAnimation.jpg', 'CT.jpg', 'Git.jpg', 'gitForTeams.jpg', 'GRE.jpg', 'internet.jpg', 'javaScript.jpg', 'learnCSS.jpg', 'linuxCMD.jpg', 'logic.jpg', 'NinjaJS.jpg', 'nutrition.jpg', 'STEM.jpg', 'UML.jpg', 'webProgramming.jpg']; // 图片数组
 var UI = {};
         UI.appWidth = window.innerWidth > 600 ? 600 : window.innerWidth;
         UI.appHeight = window.innerHeight;
@@ -197,76 +195,72 @@ var UI = {};
 var Pointer = {};
  Pointer.isDown= false;
  Pointer.x = 0;
- Pointer.deltaX =0;{
-
-function updateImage() {
-    $("bookface").style.backgroundImage = `url(lesson/${images[currentIndex]})`;
-}
-
-let handleBegin = function(ev) {
-    Pointer.isDown = true;
-
-    if (ev.touches) {
-        Pointer.x = ev.touches[0].pageX;
-        Pointer.y = ev.touches[0].pageY;
-        console.log("Touch begin : " + "(" + Pointer.x + "," + Pointer.y + ")");
-
-    } else {
-        Pointer.x = ev.pageX;
-        Pointer.y = ev.pageY;
-        console.log("PointerDown at x: " + "(" + Pointer.x + "," + Pointer.y + ")");
-    }
-};
-
-let handleEnd = function(ev) {
-    Pointer.isDown = false;
+ Pointer.deltaX =0;
+ { //Code Block begin
+   let handleBegin = function(ev){
+    Pointer.isDown=true;
+    
+	if(ev.touches){console.log("touches1"+ev.touches);
+		Pointer.x = ev.touches[0].pageX ;
+        Pointer.y = ev.touches[0].pageY ;
+		console.log("Touch begin : "+"("+Pointer.x +"," +Pointer.y +")" ) ;
+        $("bookface").textContent= "触屏事件开始，坐标："+"("+Pointer.x+","+Pointer.y+")";
+	}else{
+	  Pointer.x= ev.pageX;
+      Pointer.y= ev.pageY;
+      console.log("PointerDown at x: "+"("+Pointer.x +"," +Pointer.y +")" ) ;
+      $("bookface").textContent= "鼠标按下，坐标："+"("+Pointer.x+","+Pointer.y+")";
+	}
+   };
+  let handleEnd = function(ev){
+   Pointer.isDown=false;
+   ev.preventDefault()
+   //console.log(ev.touches)
+   if(ev.touches){
+     $("bookface").textContent= "触屏事件结束!";
+     if(Math.abs(Pointer.deltaX) > 100){
+         $("bookface").textContent += "，这是有效触屏滑动！"  ;
+     }else{
+	    $("bookface").textContent += " 本次算无效触屏滑动！"  ;
+		$("bookface").style.left = '7%' ;
+	 }
+   }else{ 
+   
+     $("bookface").textContent= "鼠标松开!";
+     if(Math.abs(Pointer.deltaX) > 100){
+         $("bookface").textContent += "，这是有效拖动！"  ;
+     }else{
+	    $("bookface").textContent += " 本次算无效拖动！"  ;
+		$("bookface").style.left = '7%' ;
+		}
+   }
+  };
+ let handleMoving = function(ev){
     ev.preventDefault();
-
-    if (ev.touches) {
-        if (Math.abs(Pointer.deltaX) > 100) {
-            if (Pointer.deltaX > 0) {
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-            } else {
-                currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-            }
-        }
-    } else {
-        if (Math.abs(Pointer.deltaX) > 100) {
-            if (Pointer.deltaX > 0) {
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
-            } else {
-                currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-            }
-        }
-    }
-
-    updateImage();
-    $("bookface").style.left = 'auto'; // 重置滑动窗口位置
-    Pointer.deltaX = 0; // 重置滑动距离
-};
-
-let handleMoving = function(ev) {
-    ev.preventDefault();
-    if (Pointer.isDown) {
-        if (ev.touches) {
-            Pointer.deltaX = parseInt(ev.touches[0].pageX - Pointer.x);
-        } else {
-            Pointer.deltaX = parseInt(ev.pageX - Pointer.x);
-        }
-        $('bookface').style.left = Pointer.deltaX + 'px';
-    }
-};
-
-document.getElementById("bookface").addEventListener("mousedown", handleBegin);
-document.getElementById("bookface").addEventListener("touchstart", handleBegin);
-document.getElementById("bookface").addEventListener("mouseup", handleEnd);
-document.getElementById("bookface").addEventListener("touchend", handleEnd);
-document.getElementById("bookface").addEventListener("mouseout", handleEnd);
-document.getElementById("bookface").addEventListener("mousemove", handleMoving);
-document.getElementById("bookface").addEventListener("touchmove", handleMoving);
-
-// 初始化图片
-updateImage();
+   if (ev.touches){
+     if (Pointer.isDown){
+	   console.log("Touch is moving");
+	   Pointer.deltaX = parseInt( ev.touches[0].pageX - Pointer.x );
+	   $("bookface").textContent= "正在滑动触屏，滑动距离：" + Pointer.deltaX +"px 。";
+	   $('bookface').style.left =  Pointer.deltaX + 'px' ;
+     } 
+   }else{
+     if (Pointer.isDown){
+	   console.log("Pointer isDown and moving");
+	   Pointer.deltaX = parseInt( ev.pageX - Pointer.x );
+	   $("bookface").textContent= "正在拖动鼠标，距离：" + Pointer.deltaX +"px 。";
+	   $('bookface').style.left =  Pointer.deltaX + 'px' ;
+     } 
+   }
+  };
+  //下面是用户交互的代码，交互的设备包括鼠标，键盘，触屏。
+  $("bookface").addEventListener("mousedown",handleBegin );
+  $("bookface").addEventListener("touchstart",handleBegin );
+  $("bookface").addEventListener("mouseup", handleEnd );
+  $("bookface").addEventListener("touchend",handleEnd );
+  $("bookface").addEventListener("mouseout", handleEnd );
+  $("bookface").addEventListener("mousemove", handleMoving);
+  $("bookface").addEventListener("touchmove", handleMoving);
 
   $("body").addEventListener("keydown", function(ev) {
                     let k = ev.key;
@@ -335,7 +329,10 @@ updateImage();
                 }
             }
         }
- 
+ // 更新显示的图片
+ function updateImage() {
+  document.getElementById('bookface').style.backgroundImage = `url('${images[currentIndex]}')`;
+}
 
 // 点击前进按钮
 document.getElementById('forwardBtn').addEventListener('click', function() {
@@ -353,6 +350,8 @@ function nextImage() {
   updateImage();
 }
 
+// 初始化显示第一张图片
+updateImage();
 
 // 自动播放
 intervalId = setInterval(nextImage, 3000);

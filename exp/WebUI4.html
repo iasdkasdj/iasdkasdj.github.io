@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+   <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width , initial-scale=1 , user-scalable=no">
+  <!-- 
+   增加这句后，可以看到浏览器的DevTools面板的模拟移动设备状态的变化
+  -->
+
+  <title>Welcome to myCTApp</title>
+ 
+<style>
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    header, nav, main, footer {
+      background-color: #fff;
+      margin: 4px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header {
+      height: 10%;
+      text-align: center;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    header p {
+      font-size: 1em;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      height: 12%;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 0.8em;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 70%;
+    }
+
+    #bookface {
+      position: relative;
+      width: 80%;
+      height: 100%;
+      border: 1px solid #ddd;
+      background-image: url();
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.6em;
+      color: #777;
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      border-radius: 5px;
+      height: 8%;
+    }
+</style>
+</head> 
+<body >
+  <header>
+    <p id="book">
+      计算机相关书籍展示
+    </p>
+   </header>
+  <nav>
+    <button id="backwardBtn">后退</button>
+    <button id="pauseBtn">暂停播放</button>
+    <button id="forwardBtn">前进</button>
+  </nav>
+ 
+
+   <main id="main">
+	<div id="bookface">
+        书的封面图
+    </div>
+   </main>
+
+  <footer> 
+   
+	CopyRight from 张梓鑫 江西科技师范大学 2024--2025
+
+  </footer> 
+ <script>
+const images = ['../lesson/bitCoin.jpg', '../lesson/canvas.jpg', '../lesson/NinjaJS.jpg',"../lesson/Git.jpg","../lesson/CS.jpg","../lesson/CSS.jpg"];
+let currentIndex = 0;
+let intervalId = null;
+let isPlaying = true; // 标记自动播放状态，默认为true表示正在播放
+var UI = {};
+        UI.appWidth = window.innerWidth > 600 ? 600 : window.innerWidth;
+        UI.appHeight = window.innerHeight;
+        const LETTERS = 22;
+        const baseFont = UI.appWidth / LETTERS;
+
+        //通过更改body对象的字体大小，这个属性能够遗传其子子孙孙
+        document.body.style.fontSize = baseFont + "px";
+        //通过把body对象的宽度和高度设置为设备/屏幕的宽度和高度，实现全屏。
+        //通过CSS对子对象百分比（纵向）的配合，从而实现响应式设计的目标。
+        document.body.style.width = UI.appWidth + "px";
+        document.body.style.height = UI.appHeight - 1 * baseFont + "px";
+
+//尝试对鼠标设计UI控制
+var mouse={};
+mouse.isDown= false;
+mouse.x= 0;
+mouse.deltaX=0;
+$("bookface").addEventListener("mousedown",function(ev){
+    let x= ev.pageX;
+    let y= ev.pageY;
+
+    console.log("鼠标按下了，坐标为："+"("+x+","+y+")");
+    $("bookface").innerText= "鼠标按下了，坐标为："+"("+x+","+y+")";
+});
+$("bookface").addEventListener("mousemove",function(ev){
+    let x= ev.pageX;
+    let y= ev.pageY;
+
+    console.log("鼠标正在移动，坐标为："+"("+x+","+y+")");
+    $("bookface").innerText= "鼠标正在移动，坐标为："+"("+x+","+y+")";
+});
+
+$("bookface").addEventListener("mouseout",function(ev){
+  // console.log(ev);
+  $("bookface").innerText="鼠标已经离开";
+})
+$("body").addEventListener("keypress",function(ev){
+  let key=ev.key;
+  let code=ev.keyCode;
+  let string="键的代码是：";
+  console.log(key);
+  $("keyboard").innerText=key+string+code;
+})
+
+  function $(ele){
+        if (typeof ele !== 'string'){
+           throw("自定义的$函数参数的数据类型错误，实参必须是字符串！");
+           return
+        }
+        let dom = document.getElementById(ele) ;
+          if(dom){
+            return dom ;
+          }else{
+            dom = document.querySelector(ele) ;
+            if (dom) {
+                return dom ;
+            }else{
+                throw("执行$函数未能在页面上获取任何元素，请自查问题！");
+                return ;
+            }
+          }
+       } //end of $
+       // 更新显示的图片
+function updateImage() {
+  document.getElementById('bookface').style.backgroundImage = `url('${images[currentIndex]}')`;
+}
+
+// 点击前进按钮
+document.getElementById('forwardBtn').addEventListener('click', function() {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImage();
+});
+// 点击后退按钮
+document.getElementById('backwardBtn').addEventListener('click', function() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateImage();
+});
+// 下一张图片
+function nextImage() {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImage();
+}
+
+// 初始化显示第一张图片
+updateImage();
+
+// 自动播放
+intervalId = setInterval(nextImage, 3000);
+
+// 停止自动播放
+document.getElementById('pauseBtn').addEventListener('click', function() {
+  clearInterval(intervalId);
+});
+
+// 切换自动播放状态
+document.getElementById('pauseBtn').addEventListener('click', function() {
+  const pauseBtn = document.getElementById('pauseBtn');
+  if (isPlaying) {
+    clearInterval(intervalId); // 停止自动播放
+    pauseBtn.textContent = '开始播放'; // 更改按钮文本
+  } else {
+    intervalId = setInterval(nextImage, 3000); // 开始自动播放
+    pauseBtn.textContent = '暂停播放'; // 更改按钮文本
+  }
+  isPlaying = !isPlaying; // 切换播放状态
+});
+
+ </script>
+ </body>
+</html>
